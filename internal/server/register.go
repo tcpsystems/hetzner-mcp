@@ -28,6 +28,11 @@ func (a *App) register(s *mcp.Server) {
 		Description: "Read this Cloud project in one call: the first page of servers plus totals for volumes, firewalls, networks, load balancers, SSH keys, and IPs. Start here.",
 		Annotations: readOnly("Describe the project"),
 	}, a.describeProject)
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "get_costs",
+		Description: "Read live spend: the standing monthly budget, the estimated monthly cost from Hetzner's own pricing for every server, and any volume or load balancer that bills but is not attached to work (idle). Never changes a resource.",
+		Annotations: readOnly("Get costs"),
+	}, a.getCosts)
 
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "list_servers",
