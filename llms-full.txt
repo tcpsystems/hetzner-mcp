@@ -1,0 +1,18 @@
+# tcpsystems/hetzner-mcp — Complete LLM Reference
+
+> Model Context Protocol (MCP) server (`cmd/mcp-hetzner`) providing structured Hetzner Cloud resource management (servers, firewalls, networks, volumes, SSH keys, floating IPs, actions) while isolating API credentials from agent contexts.
+
+## Architecture & Security Boundaries
+
+1. **Startup Token Resolution (`internal/auth`)**:
+   - Loads `HCLOUD_TOKEN` from environment or `~/.config/hcloud/cli.toml` (`HCLOUD_CONTEXT`).
+   - Attaches authentication headers inside the MCP server process; connected agents never receive tokens or raw headers.
+2. **Listener Guard (`cmd/mcp-hetzner/guard.go`)**:
+   - Default transport is `stdio`.
+   - When `--transport http` is used on any non-loopback address (`--host`), startup fails closed unless `MCP_AUTH_TOKEN` is configured.
+3. **Tool Catalog & Server (`internal/catalog`, `internal/server`)**:
+   - Registers typed MCP tools over `mark3labs/mcp-go` and `hetznercloud/hcloud-go/v2`.
+
+## Verification
+- Build: `go build -o mcp-hetzner ./cmd/mcp-hetzner`
+- Gate: `go vet ./...`, `go test -race ./...`, `staticcheck ./...`, `govulncheck ./...`

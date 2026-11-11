@@ -1,0 +1,10 @@
+# tcpsystems/hetzner-mcp
+
+> Model Context Protocol (MCP) server (`mcp-hetzner`) for Hetzner Cloud project management with strict credential isolation and loopback/bearer transport guards.
+
+## Core Rules
+- Resolves `HCLOUD_TOKEN` or `HCLOUD_CONTEXT` at startup; never exposes credentials to agents
+- Refuses non-loopback HTTP listener binding without `MCP_AUTH_TOKEN` (`cmd/mcp-hetzner/guard.go`)
+- Entry point: `cmd/mcp-hetzner` (`stdio` default and streamable `http` transports)
+- Packages: `internal/auth`, `internal/catalog`, `internal/server`
+- Operating Rules: [AGENTS.md](AGENTS.md), [CONTRIBUTING.md](CONTRIBUTING.md)
