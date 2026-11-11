@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Repository gate: formatting, vet, tests and a static build.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+bad=$(gofmt -l .)
+if [ -n "$bad" ]; then echo "gofmt needed:" >&2; echo "$bad" >&2; exit 1; fi
+go vet ./...
+go test ./...
+CGO_ENABLED=0 go build ./...
