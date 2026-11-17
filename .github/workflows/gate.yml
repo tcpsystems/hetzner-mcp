@@ -1,0 +1,15 @@
+name: gate
+
+on:
+  pull_request:
+  push:
+    branches: [develop, production, main]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: gate
+    uses: tcpsystems/ci/.github/workflows/gate.yml@a0bd415141dbc5e8334fd3143c8c5dc8730d276a
+    secrets: inherit
